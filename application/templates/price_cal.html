@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit_Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #2b942f;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        header h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+            flex-grow: 1;
+            text-align: center;
+        }
+        header button {
+            background-color: #ffa500;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        header .right-section {
+            display: flex;
+            align-items: center;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .calculate-btn, .reset-btn {
+            width: 48%;
+        }
+        .calculate-btn {
+            background-color: #2b942f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .calculate-btn:hover {
+            background-color: #216f22;
+        }
+        .reset-btn {
+            background-color: #d9534f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .reset-btn:hover {
+            background-color: #c9302c;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .result p, .result ul {
+            margin: 0;
+        }
+        .stars {
+            margin-top: 10px;
+        }
+        .stars .star {
+            color: #ffa500;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>EDINA</h1>
+        <h2>AI-Credit Scoring System</h2>
+        <div class="right-section">
+            <button type="button" onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <h1>Advanced Farmer Credit Scoring System</h1>
+    <form id="creditScoreForm">
+        <div>
+            <label for="landSize">Land Size (in acres):</label>
+            <select id="landSize" name="landSize" required>
+                <option value="1">Less than 1 acre</option>
+                <option value="3">1-2 acres</option>
+                <option value="5">2-5 acres</option>
+                <option value="7">5-10 acres</option>
+                <option value="10">More than 10 acres</option>
+            </select>
+        </div>
+        <div>
+            <label for="irrigation">Irrigation Facilities:</label>
+            <select id="irrigation" name="irrigation" required>
+                <option value="1">None</option>
+                <option value="3">Rain-fed only</option>
+                <option value="5">Basic irrigation</option>
+                <option value="7">Partial irrigation</option>
+                <option value="10">Full irrigation</option>
+            </select>
+        </div>
+        <div>
+            <label for="cropYields">Average Crop Yields (tons/acre):</label>
+            <select id="cropYields" name="cropYields" required>
+                <option value="1">Less than 0.5</option>
+                <option value="3">0.5-1</option>
+                <option value="5">1-2</option>
+                <option value="7">2-3</option>
+                <option value="10">More than 3</option>
+            </select>
+        </div>
+        <div>
+            <label for="diversity">Crop Diversity:</label>
+            <select id="diversity" name="diversity" required>
+                <option value="1">Single crop</option>
+                <option value="3">2 different crops</option>
+                <option value="5">3 different crops</option>
+                <option value="7">4-5 different crops</option>
+                <option value="10">More than 5 different crops</option>
+            </select>
+        </div>
+        <div>
+            <label for="incomeSources">Income Sources:</label>
+            <select id="incomeSources" name="incomeSources" required>
+                <option value="1">Single source (crops only)</option>
+                <option value="3">Two sources (crops + livestock)</option>
+                <option value="5">Three sources (crops + livestock + off-farm income)</option>
+                <option value="7">Four sources (crops + livestock + off-farm + dairy)</option>
+                <option value="10">More than four sources</option>
+            </select>
+        </div>
+        <div>
+            <label for="repaymentHistory">Repayment History:</label>
+            <select id="repaymentHistory" name="repaymentHistory" required>
+                <option value="1">Poor</option>
+                <option value="3">Fair</option>
+                <option value="5">Good</option>
+                <option value="8">Very Good</option>
+                <option value="10">Excellent</option>
+            </select>
+        </div>
+        <div>
+            <label for="marketAccess">Market Access:</label>
+            <select id="marketAccess" name="marketAccess" required>
+                <option value="1">Very Poor</option>
+                <option value="3">Poor</option>
+                <option value="5">Average</option>
+                <option value="7">Good</option>
+                <option value="10">Excellent</option>
+            </select>
+        </div>
+        <div>
+            <label for="weatherRisk">Weather Risk:</label>
+            <select id="weatherRisk" name="weatherRisk" required>
+                <option value="10">Low risk</option>
+                <option value="7">Moderate risk</option>
+                <option value="5">High risk</option>
+                <option value="3">Very high risk</option>
+                <option value="1">Extreme risk</option>
+            </select>
+        </div>
+        <div>
+            <label for="bankingTransactions">Banking Transactions:</label>
+            <select id="bankingTransactions" name="bankingTransactions" required>
+                <option value="1">Poor</option>
+                <option value="3">Fair</option>
+                <option value="5">Good</option>
+                <option value="8">Very Good</option>
+                <option value="10">Excellent</option>
+            </select>
+        </div>
+        <div>
+            <label for="creditUsage">Credit Usage:</label>
+            <select id="creditUsage" name="creditUsage" required>
+                <option value="1">Poor</option>
+                <option value="3">Fair</option>
+                <option value="5">Good</option>
+                <option value="8">Very Good</option>
+                <option value="10">Excellent</option>
+            </select>
+        </div>
+        <div class="buttons">
+            <button type="button" class="calculate-btn" onclick="calculateCreditScore()">Calculate Credit Score</button>
+            <button type="reset" class="reset-btn">Reset</button>
+        </div>
+    </form>
+    <div id="result" class="result"></div>
+
+    <script>
+        function logout() {
+            alert('You have been logged out successfully.');
+            // Add further logout logic here
+        }
+
+        function calculateCreditScore() {
+            const form = document.getElementById('creditScoreForm');
+            const landSize = parseInt(form.landSize.value);
+            const irrigation = parseInt(form.irrigation.value);
+            const cropYields = parseInt(form.cropYields.value);
+            const diversity = parseInt(form.diversity.value);
+            const incomeSources = parseInt(form.incomeSources.value);
+            const repaymentHistory = parseInt(form.repaymentHistory.value);
+            const marketAccess = parseInt(form.marketAccess.value);
+            const weatherRisk = parseInt(form.weatherRisk.value);
+            const bankingTransactions = parseInt(form.bankingTransactions.value);
+            const creditUsage = parseInt(form.creditUsage.value);
+
+            // Define weights
+            const weights = {
+                landSize: 0.15,
+                irrigation: 0.15,
+                cropYields: 0.15,
+                diversity: 0.10,
+                incomeSources: 0.10,
+                repaymentHistory: 0.20,
+                marketAccess: 0.05,
+                weatherRisk: 0.05,
+                bankingTransactions: 0.025,
+                creditUsage: 0.025
+            };
+
+            // Calculate credit score
+            const creditScore = (landSize * weights.landSize) +
+                                (irrigation * weights.irrigation) +
+                                (cropYields * weights.cropYields) +
+                                (diversity * weights.diversity) +
+                                (incomeSources * weights.incomeSources) +
+                                (repaymentHistory * weights.repaymentHistory) +
+                                (marketAccess * weights.marketAccess) +
+                                (weatherRisk * weights.weatherRisk) +
+                                (bankingTransactions * weights.bankingTransactions) +
+                                (creditUsage * weights.creditUsage);
+
+            // Analyze score and provide feedback
+            let feedback = '';
+            if (creditScore >= 8) {
+                feedback = 'Excellent credit score! You are likely to get favorable loan terms. Keep up the good work!';
+            } else if (creditScore >= 6) {
+                feedback = 'Good credit score, but there is room for improvement. Consider diversifying your crops or improving your irrigation facilities.';
+            } else if (creditScore >= 4) {
+                feedback = 'Fair credit score. Focus on improving your repayment history and increasing your land productivity.';
+            } else {
+                feedback = 'Poor credit score. Immediate improvements needed in various areas such as repayment history, income diversification, and crop yields.';
+            }
+
+            // Individual feedback
+            const improvementTips = `
+                <h3>Areas for Improvement:</h3>
+                <ul>
+                    <li><strong>Land Size:</strong> If possible, consider acquiring additional land or optimizing the use of your current land.</li>
+                    <li><strong>Irrigation:</strong> Implement or upgrade irrigation systems to ensure consistent water supply to your crops.</li>
+                    <li><strong>Crop Yields:</strong> Adopt better farming practices, use quality seeds, and monitor crop health to improve yields.</li>
+                    <li><strong>Crop Diversity:</strong> Diversify the types of crops grown to mitigate risks and improve resilience.</li>
+                    <li><strong>Income Sources:</strong> Explore additional income sources such as livestock, dairy, or off-farm employment.</li>
+                    <li><strong>Repayment History:</strong> Always try to repay loans on time to build a good credit history.</li>
+                    <li><strong>Market Access:</strong> Find ways to access better markets, possibly through cooperatives or direct sales agreements.</li>
+                    <li><strong>Weather Risk:</strong> Consider weather-resistant crop varieties and using weather forecasting tools.</li>
+                    <li><strong>Banking Transactions:</strong> Regularly use banking services to build a solid transaction history.</li>
+                    <li><strong>Credit Usage:</strong> Utilize credit responsibly and avoid over-leveraging.</li>
+                </ul>
+            `;
+
+            // Display the result
+            document.getElementById('result').innerHTML = `
+                <p>Calculated Credit Score: ${creditScore.toFixed(2)} out of 10</p>
+                <p>${feedback}</p>
+                ${improvementTips}
+                <div class="stars" title="Credit Score">
+                    ${getStarRating(creditScore)}
+                </div>
+            `;
+        }
+
+        function getStarRating(score) {
+            const fullStars = Math.floor(score);
+            const halfStar = (score % 1) >= 0.5 ? 1 : 0;
+            const emptyStars = 10 - fullStars - halfStar;
+
+            return '★'.repeat(fullStars) + '½'.repeat(halfStar) + '☆'.repeat(emptyStars);
+        }
+    </script>
+</body>
+</html>

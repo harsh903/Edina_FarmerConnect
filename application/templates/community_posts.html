@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Posts</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #4CAF50;
+            border-bottom: 1px solid #e1e4e8;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .container {
+            margin-top: 30px;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .post-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid #e1e4e8;
+        }
+
+        .post-card h4 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .post-card p {
+            margin-bottom: 15px;
+        }
+
+        .post-card small {
+            color: #6c757d;
+        }
+
+        .like-dislike {
+            margin-top: 15px;
+        }
+
+        .like-dislike button {
+            margin-right: 10px;
+        }
+
+        .comment-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #e1e4e8;
+        }
+
+        .comment-card h6 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 0;
+        }
+
+        .comment-card p {
+            margin-bottom: 10px;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .fab:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-primary,
+        .btn-outline-success,
+        .btn-outline-danger {
+            border-radius: 8px;
+        }
+
+        .modal-content {
+            border-radius: 12px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+        }
+
+        h5,
+        h6 {
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">Edina</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    {% if role == 'farmer' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Profile Page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('search_experts') }}">Search Experts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('community_posts') }}">Community Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('crop_recommender') }}">Crop Recommender</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('price_cal') }}">Price Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('latest_updates') }}">Latest Updates</a>
+                    </li>
+                    {% elif role == 'expert' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Profile Page</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('community_posts') }}">Community Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('latest_updates') }}">Latest Updates</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mb-4">Community Posts</h1>
+
+        <!-- Display posts -->
+        {% for post in posts %}
+        <div class="post-card">
+            <h4>{{ post.title }}</h4>
+            <p>{{ post.content }}</p>
+            <small>Posted by User {{ post.user_id }} on {{ post.created_at }}</small>
+            <div class="like-dislike mt-3">
+                <button class="btn btn-outline-success btn-sm" onclick="likePost({{ post.post_id }})">Like</button>
+                <button class="btn btn-outline-danger btn-sm" onclick="dislikePost({{ post.post_id }})">Dislike</button>
+            </div>
+
+            <!-- Comments Section -->
+            <h5 class="mt-4">Comments</h5>
+            <div id="comments-{{ post.post_id }}">
+                {% for comment in post.comments %}
+                <div class="comment-card">
+                    <h6>Comment by User {{ comment.commenter_id }}:</h6>
+                    <p>{{ comment.comment }}</p>
+                    <div class="like-dislike">
+                        <button class="btn btn-outline-success btn-sm" onclick="likeComment({{ comment.comment_id }})">Like</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="dislikeComment({{ comment.comment_id }})">Dislike</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Form to add a new comment -->
+            <div class="comment-card mt-3">
+                <h6>Add a Comment</h6>
+                <form action="{{ url_for('comment') }}" method="POST">
+                    <input type="hidden" name="post_id" value="{{ post.post_id }}">
+                    <div class="mb-3">
+                        <textarea class="form-control" name="comment" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab" data-bs-toggle="modal" data-bs-target="#postModal">+</div>
+
+    <!-- Modal for creating a new post -->
+    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="postModalLabel">Create a New Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('community_posts') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function likePost(postId) {
+            // Implement the like post functionality here
+        }
+
+        function dislikePost(postId) {
+            // Implement the dislike post functionality here
+        }
+
+        function likeComment(commentId) {
+            // Implement the like comment functionality here
+        }
+
+        function dislikeComment(commentId) {
+            // Implement the dislike comment functionality here
+        }
+    </script>
+</body>
+
+</html>
